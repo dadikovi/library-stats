@@ -1,0 +1,9 @@
+entity Stat {
+	objectType StatObject,
+    objectName String,
+    statValue String
+}
+
+enum StatObject {
+  AUTHOR, PUBLISHER, GLOBAL
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Stat",
+  "fields": [
+    {
+      "fieldName": "objectType",
+      "fieldType": "StatObject",
+      "fieldValues": "AUTHOR,PUBLISHER,GLOBAL"
+    },
+    {
+      "fieldName": "objectName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "statValue",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20200824144528",
+  "entityTableName": "stat",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "libraryStats",
+  "applications": "*",
+  "microserviceName": "libraryStats"
+}
