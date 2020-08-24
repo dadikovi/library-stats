@@ -8,7 +8,7 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-      - SPRING_DATASOURCE_URL=jdbc:mysql://libraryshelf-mysql:3306/libraryshelf?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/libraryshelf?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
   librarystats-app:
     image: librarystats
@@ -18,12 +18,12 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-      - SPRING_DATASOURCE_URL=jdbc:mysql://librarystats-mysql:3306/librarystats?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/librarystats?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-  librarystats-mysql:
+  mysql:
     extends:
       file: mysql.yml
-      service: librarystats-mysql
+      service: mysql
   jhipster-registry:
     extends:
       file: jhipster-registry.yml
