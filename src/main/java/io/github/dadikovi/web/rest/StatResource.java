@@ -6,17 +6,13 @@ import io.github.dadikovi.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -44,16 +40,43 @@ public class StatResource {
     }
 
     /**
-     * {@code POST  /calculate-stats} : Recalculates all of the stats.
+     * {@code POST  /stats} : Create a new stat.
      *
-     * @return the {@link ResponseEntity} with status {@code 201 (Calculated)}
+     * @param stat the stat to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new stat, or with status {@code 400 (Bad Request)} if the stat has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/calculate-stats")
-    @ApiOperation("Recalculates all of the stats.")
-    public ResponseEntity<Void> calculateAllStats() throws URISyntaxException {
-        // TODO implement me
-        return ResponseEntity.noContent().build();
+    @PostMapping("/stats")
+    public ResponseEntity<Stat> createStat(@RequestBody Stat stat) throws URISyntaxException {
+        log.debug("REST request to save Stat : {}", stat);
+        if (stat.getId() != null) {
+            throw new BadRequestAlertException("A new stat cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Stat result = statRepository.save(stat);
+        return ResponseEntity.created(new URI("/api/stats/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code PUT  /stats} : Updates an existing stat.
+     *
+     * @param stat the stat to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated stat,
+     * or with status {@code 400 (Bad Request)} if the stat is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the stat couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/stats")
+    public ResponseEntity<Stat> updateStat(@RequestBody Stat stat) throws URISyntaxException {
+        log.debug("REST request to update Stat : {}", stat);
+        if (stat.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        Stat result = statRepository.save(stat);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, stat.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -68,22 +91,28 @@ public class StatResource {
     }
 
     /**
-     * {@code GET  /stats-filtered} : get all the stats filtered by the provided attribute values.
+     * {@code GET  /stats/:id} : get the "id" stat.
      *
-     * @param stats the example which will be the param of the query by example query
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the filtered list of stats in body.
+     * @param id the id of the stat to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the stat, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/stats-filtered")
-    @ApiOperation("Gets all stats which are matching with the provided example.")
-    public List<Stat> getAllStatsByExample(@ApiParam(
-        name = "stat",
-        type = "Stat",
-        value = "The example which will be the param of the query-by-example query. "
-            + "A stat will be returned if and only if all of the field values equal with the field values of this parameter."
-    ) @Valid Stat stat) {
-        log.debug("REST request to get filtered Stat : {}", stat);
-        return statRepository.findAll(Example.of(stat));
+    @GetMapping("/stats/{id}")
+    public ResponseEntity<Stat> getStat(@PathVariable Long id) {
+        log.debug("REST request to get Stat : {}", id);
+        Optional<Stat> stat = statRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(stat);
     }
 
-
+    /**
+     * {@code DELETE  /stats/:id} : delete the "id" stat.
+     *
+     * @param id the id of the stat to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/stats/{id}")
+    public ResponseEntity<Void> deleteStat(@PathVariable Long id) {
+        log.debug("REST request to delete Stat : {}", id);
+        statRepository.deleteById(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
 }
