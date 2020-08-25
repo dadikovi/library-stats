@@ -95,20 +95,26 @@ public class Stat implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Stat)) {
-            return false;
-        }
-        return id != null && id.equals(((Stat) o).id);
-    }
+
 
     @Override
     public int hashCode() {
         return 31;
+    }
+
+    @Override public boolean equals( Object o ) {
+        if ( this == o )
+            return true;
+        if ( o == null || getClass() != o.getClass() )
+            return false;
+
+        Stat stat = (Stat) o;
+
+        if ( objectType != stat.objectType )
+            return false;
+        if ( objectName != null ? !objectName.equals(stat.objectName) : stat.objectName != null )
+            return false;
+        return statType != null ? statType.equals(stat.statType) : stat.statType == null;
     }
 
     // prettier-ignore
