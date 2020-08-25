@@ -2,6 +2,7 @@ package io.github.dadikovi.web.rest;
 
 import io.github.dadikovi.LibraryStatsApp;
 import io.github.dadikovi.domain.Stat;
+import io.github.dadikovi.repository.BookRepository;
 import io.github.dadikovi.repository.StatRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +52,10 @@ public class StatResourceIT {
     @Autowired
     private MockMvc restStatMockMvc;
 
+    private static Stat douglasAdams() {
+        return new Stat()
+            .objectType(StatObject.AUTHOR)
+            .objectName("Dougles Adams");
     private Stat stat;
 
     /**
