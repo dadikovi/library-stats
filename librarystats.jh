@@ -1,6 +1,7 @@
 entity Stat {
 	objectType StatObject,
     objectName String,
+    statType String,
     statValue String
 }
 

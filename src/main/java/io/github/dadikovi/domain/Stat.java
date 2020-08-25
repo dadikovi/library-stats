@@ -27,6 +27,9 @@ public class Stat implements Serializable {
     @Column(name = "object_name")
     private String objectName;
 
+    @Column(name = "stat_type")
+    private String statType;
+
     @Column(name = "stat_value")
     private String statValue;
 
@@ -63,6 +66,19 @@ public class Stat implements Serializable {
 
     public void setObjectName(String objectName) {
         this.objectName = objectName;
+    }
+
+    public String getStatType() {
+        return statType;
+    }
+
+    public Stat statType(String statType) {
+        this.statType = statType;
+        return this;
+    }
+
+    public void setStatType(String statType) {
+        this.statType = statType;
     }
 
     public String getStatValue() {
@@ -102,6 +118,7 @@ public class Stat implements Serializable {
             "id=" + getId() +
             ", objectType='" + getObjectType() + "'" +
             ", objectName='" + getObjectName() + "'" +
+            ", statType='" + getStatType() + "'" +
             ", statValue='" + getStatValue() + "'" +
             "}";
     }
