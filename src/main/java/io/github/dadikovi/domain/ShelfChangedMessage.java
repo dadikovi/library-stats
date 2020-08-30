@@ -7,6 +7,10 @@ public class ShelfChangedMessage {
     private ChangeType changeType;
     private Book changedBook;
 
+    public ShelfChangedMessage() {
+
+    }
+
     public ShelfChangedMessage( ChangeType changeType, Book changedBook ) {
         this.changeType = changeType;
         this.changedBook = changedBook;
