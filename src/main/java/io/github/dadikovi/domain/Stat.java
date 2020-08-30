@@ -102,7 +102,8 @@ public class Stat implements Serializable {
         return 31;
     }
 
-    @Override public boolean equals( Object o ) {
+    @Override
+    public boolean equals( Object o ) {
         if ( this == o )
             return true;
         if ( o == null || getClass() != o.getClass() )
@@ -110,11 +111,7 @@ public class Stat implements Serializable {
 
         Stat stat = (Stat) o;
 
-        if ( objectType != stat.objectType )
-            return false;
-        if ( objectName != null ? !objectName.equals(stat.objectName) : stat.objectName != null )
-            return false;
-        return statType != null ? statType.equals(stat.statType) : stat.statType == null;
+        return id != null ? id.equals(stat.id) : false;
     }
 
     // prettier-ignore

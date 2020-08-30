@@ -105,6 +105,10 @@ management:
             enabled: true
 
 spring:
+  rabbitmq:
+    host: rabbitmq
+    username: admin
+    password: admin
   application:
     name: libraryStats
   jmx:

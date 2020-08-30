@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RabbitListener(queues = "shelfChanged")
 @Service
@@ -19,6 +20,7 @@ public class ShelfChangedListener {
     private StatCalculatorService calculatorService;
 
     @RabbitHandler
+    @Transactional
     public void handle(ShelfChangedMessage message) {
         switch ( message.getChangeType() ) {
             case CREATE:
