@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 import io.github.dadikovi.domain.enumeration.StatObject;
+import io.github.dadikovi.domain.enumeration.StatType;
 
 /**
  * A Stat.
@@ -27,8 +28,9 @@ public class Stat implements Serializable {
     @Column(name = "object_name")
     private String objectName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "stat_type")
-    private String statType;
+    private StatType statType;
 
     @Column(name = "stat_value")
     private String statValue;
@@ -68,16 +70,16 @@ public class Stat implements Serializable {
         this.objectName = objectName;
     }
 
-    public String getStatType() {
+    public StatType getStatType() {
         return statType;
     }
 
-    public Stat statType(String statType) {
+    public Stat statType(StatType statType) {
         this.statType = statType;
         return this;
     }
 
-    public void setStatType(String statType) {
+    public void setStatType(StatType statType) {
         this.statType = statType;
     }
 

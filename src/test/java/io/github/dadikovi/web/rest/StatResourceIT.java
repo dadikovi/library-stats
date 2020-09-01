@@ -2,6 +2,7 @@ package io.github.dadikovi.web.rest;
 
 import io.github.dadikovi.LibraryStatsApp;
 import io.github.dadikovi.domain.Stat;
+import io.github.dadikovi.domain.enumeration.StatType;
 import io.github.dadikovi.repository.BookRepository;
 import io.github.dadikovi.repository.StatRepository;
 
@@ -42,7 +43,7 @@ public class StatResourceIT {
         return new Stat()
             .objectType(StatObject.AUTHOR)
             .objectName("Dougles Adams")
-            .statType("Count of books")
+            .statType(StatType.COUNT_BY_AUTHOR)
             .statValue(String.valueOf(10));
     }
 
@@ -50,7 +51,7 @@ public class StatResourceIT {
         return new Stat()
             .objectType(StatObject.PUBLISHER)
             .objectName("Megadodo Publications")
-            .statType("Count of books")
+            .statType(StatType.COUNT_BY_AUTHOR)
             .statValue(String.valueOf(10));
     }
 

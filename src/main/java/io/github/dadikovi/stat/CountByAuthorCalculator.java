@@ -2,13 +2,14 @@ package io.github.dadikovi.stat;
 
 import io.github.dadikovi.domain.Stat;
 import io.github.dadikovi.domain.enumeration.StatObject;
+import io.github.dadikovi.domain.enumeration.StatType;
 import io.github.dadikovi.repository.BookRepository;
 import io.github.dadikovi.repository.StatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CountByAuthorCalculator implements StatCalculator {
+public class CountByAuthorCalculator extends AbstractSimpleCachedQueryStatCalculator {
 
     @Autowired
     private BookRepository bookRepository;
@@ -22,8 +23,8 @@ public class CountByAuthorCalculator implements StatCalculator {
     }
 
     @Override
-    public String getStatType() {
-        return "Count by author";
+    public StatType getStatType() {
+        return StatType.COUNT_BY_AUTHOR;
     }
 
     @Override
