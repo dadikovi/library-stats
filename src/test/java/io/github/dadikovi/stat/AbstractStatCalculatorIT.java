@@ -10,10 +10,13 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,6 +39,8 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
 
     private T calculator;
     private StatType statType;
+
+    private Map<String, String> additionalParams;
 
     AbstractStatCalculatorIT(StatType statType) {
         this.statType = statType;
@@ -62,6 +67,10 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
     protected void addValuesAndExpectGivenResult(List<Book> booksToAdd, String expectedResult) throws Exception {
         addValuesAndExpectOneResult(booksToAdd)
             .andExpect(jsonPath("$.statValue").value(is(expectedResult)));
+    }
+
+    protected void setAdditionalParams( Map<String, String> additionalParams ) {
+        this.additionalParams = additionalParams;
     }
 
     @NotNull
@@ -91,7 +100,14 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
     }
 
     private String getUrlTemplate(String objectName) {
-        return "/api/stat?statObjectName=" + objectName + "&statType=" + calculator.getStatType().name();
+        StringBuilder urlTemplateBuilder
+            = new StringBuilder("/api/stat?statObjectName=" + objectName + "&statType=" + calculator.getStatType().name());
+
+        if (!CollectionUtils.isEmpty(this.additionalParams)) {
+            this.additionalParams.forEach((key, value) -> urlTemplateBuilder.append("&" + key + "=" + value));
+        }
+
+        return urlTemplateBuilder.toString();
     }
 
     protected static Book warAndPeace() {
