@@ -41,7 +41,7 @@ public class StatResource {
         @ApiParam(
             name = "statObjectName",
             type = "String",
-            value = "The object the stat should be returned to"
+            value = "The object the stat should be returned to. For global stats you can leave this empty."
         ) @Valid String statObjectName,
         @ApiParam(
             name = "allRequestParams",

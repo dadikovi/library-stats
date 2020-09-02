@@ -8,44 +8,36 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootTest(classes = LibraryStatsApp.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class CountByMaxYearAndAuthorCalculatorIT extends AbstractStatCalculatorIT<CountByMaxYearAndAuthorCalculator> {
+public class OldestBookCalculatorIT extends AbstractStatCalculatorIT<OldestBookCalculator> {
 
-    CountByMaxYearAndAuthorCalculatorIT() {
-        super(StatType.COUNT_BY_MAX_YEAR_AND_AUTHOR);
+    OldestBookCalculatorIT() {
+        super(StatType.OLDEST_BOOK);
     }
 
     @Test
     @Transactional
     public void testWithEmptyValues() throws Exception {
-        super.setAdditionalParams(maxYear1978());
         super.testWithEmptyValues();
     }
 
     @Test
     @Transactional
     public void testWithOneValue() throws Exception {
-        super.setAdditionalParams(maxYear1978());
-        super.addValuesAndExpectGivenResult(Collections.singletonList(warAndPeace()), LEO_TOLSTOY, String.valueOf(2));
+        super.addValuesAndExpectGivenResult(Collections.singletonList(warAndPeace()), LEO_TOLSTOY,
+            warAndPeace().getAuthor() + ": " + warAndPeace().getTitle());
     }
 
     @Test
     @Transactional
     public void testWithMultipleValues() throws Exception {
-        super.setAdditionalParams(maxYear1978());
-        super.addValuesAndExpectGivenResult(Arrays.asList(warAndPeace(), hitchhikersGuideToTheGalaxy()), LEO_TOLSTOY, String.valueOf(4));
-    }
-
-    private static Map<String, String> maxYear1978() {
-        Map<String, String> params = new HashMap<>();
-        params.put("maxYear", "1978");
-        return params;
+        super.addValuesAndExpectGivenResult(Arrays.asList(warAndPeace(), hitchhikersGuideToTheGalaxy()), LEO_TOLSTOY,
+            warAndPeace().getAuthor() + ": " + warAndPeace().getTitle());
     }
 }

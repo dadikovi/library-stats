@@ -39,7 +39,8 @@ public class CountByMaxYearAndAuthorCalculator implements StatCalculator {
         if (params.get("maxYear") == null) {
             throw new IllegalArgumentException("maxYear must be provided for this stat.");
         }
-        CountByMaxYearAndAuthor count = repository.findByMaxYearAndAuthor(Long.valueOf(params.get("maxYear")), objectId);
+        CountByMaxYearAndAuthor count = repository.findTopByMaxYearLessThanEqualAndAuthorOrderByMaxYearDesc(
+            Long.valueOf(params.get("maxYear")), objectId);
         return count == null ? null : count.getCount().toString();
     }
 }

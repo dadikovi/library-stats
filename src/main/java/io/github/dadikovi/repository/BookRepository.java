@@ -21,6 +21,18 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         + "group by b.author")
     List<AggregationResult> getCountByAuthors();
 
+    @Query("select new io.github.dadikovi.domain.AggregationResult(b.publisher, cast(sum(b.count) as string)) "
+        + "from Book b "
+        + "group by b.publisher")
+    List<AggregationResult> getCountByPublishers();
+
+    @Query("select avg(year(current_date()) - b.publishYear) "
+        + "from Book b ")
+    Integer getAvgAge();
+
+    Book findTopByOrderByPublishYear();
+    Book findTopByOrderByPublishYearDesc();
+
     @Query("select new io.github.dadikovi.domain.CountByMaxYearAndAuthor(b.publishYear, b.author, ( "
             + "select sum(s.count) from Book s where s.publishYear <= b.publishYear "
         + ")) "

@@ -29,12 +29,12 @@ public class CountByAuthorCalculatorIT extends AbstractStatCalculatorIT<CountByA
     @Test
     @Transactional
     public void testWithOneValue() throws Exception {
-        super.addValuesAndExpectGivenResult(Collections.singletonList(warAndPeace()), String.valueOf(2));
+        super.addValuesAndExpectGivenResult(Collections.singletonList(warAndPeace()), LEO_TOLSTOY, String.valueOf(2));
     }
 
     @Test
     @Transactional
     public void testWithMultipleValues() throws Exception {
-        super.addValuesAndExpectGivenResult(Arrays.asList(warAndPeace(), hitchhikersGuideToTheGalaxy()), String.valueOf(4));
+        super.addValuesAndExpectGivenResult(Arrays.asList(warAndPeace(), hitchhikersGuideToTheGalaxy()), LEO_TOLSTOY, String.valueOf(4));
     }
 }

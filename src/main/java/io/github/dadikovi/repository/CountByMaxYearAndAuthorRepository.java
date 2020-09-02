@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface CountByMaxYearAndAuthorRepository extends JpaRepository<CountByMaxYearAndAuthor, Long> {
-    CountByMaxYearAndAuthor findByMaxYearAndAuthor(Long maxYear, String author);
+    CountByMaxYearAndAuthor findTopByMaxYearLessThanEqualAndAuthorOrderByMaxYearDesc(Long maxYear, String author);
 }

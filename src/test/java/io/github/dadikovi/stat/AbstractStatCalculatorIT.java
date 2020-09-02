@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
 
     private static final String WAR_AND_PEACE = "War and Peace";
-    private static final String LEO_TOLSTOY = "Leo Tolstoy";
+    protected static final String LEO_TOLSTOY = "Leo Tolstoy";
 
     @Autowired
     private MockMvc restStatMockMvc;
@@ -58,14 +58,14 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
         performRestMockAndExpectOkStatus("dummy");
     }
 
-    protected @NotNull ResultActions addValuesAndExpectOneResult( List<Book> booksToAdd) throws Exception {
+    protected @NotNull ResultActions addValuesAndExpectOneResult( List<Book> booksToAdd, String objectName ) throws Exception {
         booksToAdd.forEach(book -> listener.handle(new ShelfChangedMessage(ChangeType.CREATE, book)));
 
-        return performRestMockAndExpectOneResult();
+        return performRestMockAndExpectOneResult(objectName);
     }
 
-    protected void addValuesAndExpectGivenResult(List<Book> booksToAdd, String expectedResult) throws Exception {
-        addValuesAndExpectOneResult(booksToAdd)
+    protected void addValuesAndExpectGivenResult(List<Book> booksToAdd, String objectName, String expectedResult) throws Exception {
+        addValuesAndExpectOneResult(booksToAdd, objectName)
             .andExpect(jsonPath("$.statValue").value(is(expectedResult)));
     }
 
@@ -74,8 +74,8 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
     }
 
     @NotNull
-    private ResultActions performRestMockAndExpectOneResult() throws Exception {
-        return performRestMockAndExpectOkStatus(getRelevantObjectName(warAndPeace()))
+    private ResultActions performRestMockAndExpectOneResult( String objectName ) throws Exception {
+        return performRestMockAndExpectOkStatus(objectName)
             .andExpect(jsonPath("$.statType").value(is(calculator.getStatType().name())));
     }
 
@@ -84,19 +84,6 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
         return restStatMockMvc
             .perform(get(getUrlTemplate(objectName)))
             .andExpect(status().isOk());
-    }
-
-    private String getRelevantObjectName(Book book) {
-        switch ( this.calculator.getStatObject() ) {
-            case AUTHOR:
-                return book.getAuthor();
-            case PUBLISHER:
-                return book.getPublisher();
-            case GLOBAL:
-                return "GLOBAL - TODO";
-            default:
-                return "NONE";
-        }
     }
 
     private String getUrlTemplate(String objectName) {
