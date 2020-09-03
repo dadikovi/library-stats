@@ -97,13 +97,31 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
         return urlTemplateBuilder.toString();
     }
 
+    protected static Book annaKarenina() {
+        return new Book()
+            .title("Anna Karenina")
+            .author(LEO_TOLSTOY)
+            .publisher("The Russian Messenger")
+            .publishYear(1877L)
+            .count(10L);
+    }
+
+    protected static Book resurrection() {
+        return new Book()
+            .title("Anna Karenina")
+            .author(LEO_TOLSTOY)
+            .publisher("The Russian Messenger")
+            .publishYear(1899L)
+            .count(15L);
+    }
+
     protected static Book warAndPeace() {
         return new Book()
             .title(WAR_AND_PEACE)
             .author(LEO_TOLSTOY)
             .publisher("The Russian Messenger")
             .publishYear(1869L)
-            .createdAt(Instant.now())
+            .createdAt(Instant.parse("2020-01-01T10:15:30Z"))
             .count(2L);
     }
 
@@ -113,7 +131,28 @@ public abstract class AbstractStatCalculatorIT<T extends StatCalculator> {
             .author(LEO_TOLSTOY) // Its not, but we have to lie now.
             .publisher("Megadodo Publications")
             .publishYear(1978L)
-            .createdAt(Instant.now())
+            .createdAt(Instant.parse("2020-01-01T10:15:30Z"))
             .count(2L);
+    }
+
+    protected static Book onPhotography() {
+        return new Book()
+            .title("On Photography")
+            .author("Susan Sontag")
+            .count(10L);
+    }
+
+    protected static Book illnessAsMetaphor() {
+        return new Book()
+            .title("Illness as Metaphor")
+            .author("Susan Sontag")
+            .count(11L);
+    }
+
+    protected static Book regardingThePainOfOthers() {
+        return new Book()
+            .title("Regarding the Pain of Others ")
+            .author("Susan Sontag")
+            .count(12L);
     }
 }

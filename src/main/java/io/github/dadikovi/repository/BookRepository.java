@@ -21,10 +21,21 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         + "group by b.author")
     List<AggregationResult> getCountByAuthors();
 
+    @Query("select new io.github.dadikovi.domain.AggregationResult(b.author, cast(avg(year(b.createdAt) - b.publishYear) as string)) "
+        + "from Book b "
+        + "group by b.author")
+    List<AggregationResult> getAvgLatencyByAuthors();
+
     @Query("select new io.github.dadikovi.domain.AggregationResult(b.publisher, cast(sum(b.count) as string)) "
         + "from Book b "
         + "group by b.publisher")
     List<AggregationResult> getCountByPublishers();
+
+    @Query(value = "select x.* "
+        + "from ( select b.*, ROW_NUMBER() over (partition by author order by publish_year) as RANK "
+        + "       from Book b ) x "
+        + "where x.rank = 3", nativeQuery = true)
+    List<Book> getCountOfThirdBookByAuthor();
 
     @Query("select avg(year(current_date()) - b.publishYear) "
         + "from Book b ")

@@ -1,7 +1,6 @@
 package io.github.dadikovi.stat;
 
 import io.github.dadikovi.LibraryStatsApp;
-import io.github.dadikovi.domain.Book;
 import io.github.dadikovi.domain.enumeration.StatType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,10 +14,10 @@ import java.util.Collections;
 @SpringBootTest(classes = LibraryStatsApp.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class CountByPublisherCalculatorIT extends AbstractStatCalculatorIT<CountByPublisherCalculator> {
+public class AvgLatencyByAuthorCalculatorIT extends AbstractStatCalculatorIT<AvgLatencyByAuthorCalculator> {
 
-    CountByPublisherCalculatorIT() {
-        super(StatType.COUNT_BY_PUBLISHER);
+    AvgLatencyByAuthorCalculatorIT() {
+        super(StatType.AVG_LATENCY_BY_AUTHOR);
     }
 
     @Test
@@ -30,12 +29,14 @@ public class CountByPublisherCalculatorIT extends AbstractStatCalculatorIT<Count
     @Test
     @Transactional
     public void testWithOneValue() throws Exception {
-        super.addValuesAndExpectGivenResult(Collections.singletonList(warAndPeace()), "The Russian Messenger", String.valueOf(2));
+        super.addValuesAndExpectGivenResult(Collections.singletonList(warAndPeace()), LEO_TOLSTOY, String.valueOf(2020-1869L*1.0));
     }
 
     @Test
     @Transactional
     public void testWithMultipleValues() throws Exception {
-        super.addValuesAndExpectGivenResult(Arrays.asList(warAndPeace(), annaKarenina()), "The Russian Messenger", String.valueOf(12));
+        super.addValuesAndExpectGivenResult(Arrays.asList(warAndPeace(), hitchhikersGuideToTheGalaxy()), LEO_TOLSTOY, String.valueOf(
+            ((2020-1869L)+(2020-1978))/2.0
+        ));
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AvgAgeCalculator extends AbstractSimpleCachedQueryGlobalStatCalculator {
+public class AvgLatencyByAuthorCalculator extends AbstractSimpleCachedQueryStatCalculator {
 
     @Autowired
     private BookRepository bookRepository;
@@ -18,20 +18,24 @@ public class AvgAgeCalculator extends AbstractSimpleCachedQueryGlobalStatCalcula
     private StatRepository statRepository;
 
     @Override
+    public StatObject getStatObject() {
+        return StatObject.AUTHOR;
+    }
+
+    @Override
     public StatType getStatType() {
-        return StatType.AVG_AGE;
+        return StatType.AVG_LATENCY_BY_AUTHOR;
     }
 
     @Override
     public void calculateAndSaveStat() {
-        Integer avgAge = bookRepository.getAvgAge();
-
-        if (avgAge != null) {
-            statRepository.save(new Stat()
+        bookRepository.getAvgLatencyByAuthors()
+            .stream()
+            .map(r -> new Stat()
                 .objectType(this.getStatObject())
-                .objectName(this.getStatObject().name())
+                .objectName(r.getKey())
                 .statType(this.getStatType())
-                .statValue(avgAge.toString()));
-        }
+                .statValue(r.getValue()))
+            .forEach(statRepository::save);
     }
 }

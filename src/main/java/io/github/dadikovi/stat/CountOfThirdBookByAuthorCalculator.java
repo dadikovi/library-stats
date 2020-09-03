@@ -1,5 +1,7 @@
 package io.github.dadikovi.stat;
 
+import io.github.dadikovi.domain.AggregationResult;
+import io.github.dadikovi.domain.Book;
 import io.github.dadikovi.domain.Stat;
 import io.github.dadikovi.domain.enumeration.StatObject;
 import io.github.dadikovi.domain.enumeration.StatType;
@@ -8,8 +10,10 @@ import io.github.dadikovi.repository.StatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class AvgAgeCalculator extends AbstractSimpleCachedQueryGlobalStatCalculator {
+public class CountOfThirdBookByAuthorCalculator extends AbstractSimpleCachedQueryStatCalculator {
 
     @Autowired
     private BookRepository bookRepository;
@@ -18,20 +22,25 @@ public class AvgAgeCalculator extends AbstractSimpleCachedQueryGlobalStatCalcula
     private StatRepository statRepository;
 
     @Override
+    public StatObject getStatObject() {
+        return StatObject.AUTHOR;
+    }
+
+    @Override
     public StatType getStatType() {
-        return StatType.AVG_AGE;
+        return StatType.COUNT_OF_THIRD_BOOK;
     }
 
     @Override
     public void calculateAndSaveStat() {
-        Integer avgAge = bookRepository.getAvgAge();
-
-        if (avgAge != null) {
-            statRepository.save(new Stat()
+        List<Book> result = bookRepository.getCountOfThirdBookByAuthor();
+        result
+            .stream()
+            .map(r -> new Stat()
                 .objectType(this.getStatObject())
-                .objectName(this.getStatObject().name())
+                .objectName(r.getAuthor())
                 .statType(this.getStatType())
-                .statValue(avgAge.toString()));
-        }
+                .statValue(r.getCount().toString()))
+            .forEach(statRepository::save);
     }
 }
