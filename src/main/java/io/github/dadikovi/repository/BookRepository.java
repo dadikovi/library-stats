@@ -31,10 +31,12 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         + "group by b.publisher")
     List<AggregationResult> getCountByPublishers();
 
-    @Query(value = "select x.* "
-        + "from ( select b.*, ROW_NUMBER() over (partition by author order by publish_year) as RANK "
-        + "       from Book b ) x "
-        + "where x.rank = 3", nativeQuery = true)
+    @Query(value = "WITH books AS ( "
+        + " select b.*, ROW_NUMBER() over (partition by b.author order by b.publish_year) as bookrank "
+        + " from Book b ) "
+        + "select x.* "
+        + "from books x "
+        + "where x.bookrank = 3", nativeQuery = true)
     List<Book> getCountOfThirdBookByAuthor();
 
     @Query("select avg(year(current_date()) - b.publishYear) "
